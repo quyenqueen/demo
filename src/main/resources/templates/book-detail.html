@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+    <style>
+        header, footer {
+            padding: 1em;
+            color: black;
+            background-color: white;
+            clear: left;
+        }
+        
+        header {
+            text-align: center;
+        }
+        
+        footer {
+            text-align: left;
+            border-top: 3px solid #000;
+            position: fixed;
+            bottom: 50px;
+            width: 100%;
+        }
+        
+        .container, .row1 {
+            display: flex;
+        }
+        
+        .row {
+            margin-bottom: 15px;
+            margin-right: 10px;
+        }
+        
+        .row label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .rowrow {
+            width: 50%;
+        }
+        
+        #imagePreview {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-left: 10px;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #imagePreview img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+        
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .btn {
+            border: 2px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .upload-btn-wrapper input[type="file"] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        #url {
+            display: block;
+            border: none; /* Loại bỏ viền */
+            outline: none; /* Loại bỏ đường viền khi focus */
+        }
+        .containers {
+         width: 100%;
+         height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="containers">
+        <header>
+            <h1>Sách</h1>
+        </header>
+        <form th:object="${book}" th:action="@{/book/save/{nop}(nop=${book.nop})}"  
+    th:method="${nop} < 0 ? POST : PUT" enctype="multipart/form-data">
+        <div class="container">
+            <div class="rowrow">
+                <div class="row1">
+                    <div class="row">
+                        <label for="title">Tiêu đề</label>
+                        <input style="width: 250px; height: 20px;" type="text" id="title" name="title" th:value="${book.title}" required>
+                    </div>
+                    <div class="row">
+                        <label for="author">Tác giả</label>
+                        <input style="width: 250px; height: 20px;" type="text" id="author" name="author" th:value="${book.author}" required>
+                    </div>
+                </div>
+                <div class="row1">
+                    <div class="row">
+                        <label for="description">Mô tả về sách</label>
+                        <input style="width: 520px; height: 100px;" type="text" id="description" name="description" th:value="${book.description}" required>
+                    </div>
+                </div>
+                <div class="row1">
+                    <div class="row">
+                        <label for="nph">Ngày phát hành</label>
+                        <input style="width: 250px; height: 20px;" type="date" id="nph" name="nph" th:value="${book.nph}" required>
+                    </div>
+                    <div class="row">
+                        <label for="nop">Số trang</label>
+                        <input style="width: 250px; height: 20px;" type="number" id="nop" name="nop" th:value="${book.nop}" required>
+                    </div>
+                </div>
+                <div class="row1">
+                    <div class="row">
+                        <label for="category">Thể loại</label>
+                        <select style="width: 250px; height: 20px;" id="category" name="category" required>
+                            <option value="Truyện">Truyện</option>
+                            <option value="Thơ">Thơ</option>
+                            <option value="Lập trình web">Lập trình web</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="rowrow">
+                <div class="row" style="display: flex; justify-content: center;">
+                    <div class="upload-btn-wrapper">
+                        <button class="btn">Upload</button>
+                        <input type="file" onchange="previewImage(event)" id="fileInput">
+                         <input type="text" id="url" name="url" th:value="${book.url}">
+                    </div>
+                </div>
+                <img th:src="@{${book.url}}" id="output" width="600" height="250">
+            </div>
+        </div>
+        <footer>
+            <input type="submit" value="Save Book"
+                th:value="${nop} < 0 ? 'Add' : 'Edit'"
+                style="position: fixed; bottom: 40px; right: 100px; width: 200px; height: 40px;"
+                onclick="return confirm('Bạn có muốn thực hiện điều này?')"
+            />
+        </footer>
+    </form>
+    <p th:if="${error}" style="color: red" th:text="${error}"></p>
+    </div>
+    
+   
+      <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('output');
+                output.src = reader.result;
+
+                var urlInput = document.getElementById('url');
+                urlInput.value = event.target.files[0].name;
+                
+            }
+            reader.readAsDataURL(event.target.files[0]);
+            
+        }
+
+        document.getElementById("fileInput").addEventListener("change", previewImage);
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <style>
+        td, th ,h1{
+            text-align: center;
+        }
+        button.DX {
+            background-color: rgb(191, 225, 242);
+            width: 100px;
+            height: 30px;
+            position: absolute;
+        	top: 50%;
+        	right: 30px;
+        	transform: translateY(-50%);
+        }
+        header {
+        background-color: rgb(247, 212, 238);
+        height: 50px;
+        position: relative;
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+	<header>
+    	<h1>Books</h1>
+		<a href="/books1"><button class="DX" onclick="return confirm('Bạn có muốn đăng xuất?')">Đăng xuất</button></a>
+  	</header>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Thể loại</th>
+            <th>Ngày phát hành</th>
+            <th>Số trang</th>
+            <th>Số lượng bán</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books2}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.category}"></td>
+            <td th:text="${book.nph}"></td>
+            <td th:text="${book.nop}"></td>
+            <td th:text="${book.slb}"></td>
+            <td align="center">
+            	<a th:href="@{book/{title}/{nop}(nop = ${book.nop} ,title = ${book.title})}"class="btn btn-success">View</a>
+                    <form method="POST" th:action="@{/book/delete/{title}(title=${book.title})}" th:method="delete">
+                        <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không?')">Delete</button>
+                    </form>
+			</td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{book/{title}/{nop}(nop = -1,  title='?')}"
+   class="btn btn-success col-lg-12">New Book</a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+    <style>
+        header, footer {
+            padding: 1em;
+            color: black;
+            background-color: white;
+            clear: left;
+        }
+        
+        header {
+            text-align: center;
+        }
+        
+        footer {
+            text-align: left;
+            border-top: 3px solid #000;
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+        }
+        
+        .container, .row1 {
+            display: flex;
+        }
+        
+        .row {
+            margin-bottom: 15px;
+            margin-right: 10px;
+        }
+        
+        .row label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .rowrow {
+            width: 50%;
+        }
+        
+        #imagePreview {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-left: 10px;
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #imagePreview img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+        
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .btn {
+            border: 2px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .upload-btn-wrapper input[type="file"] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        #url {
+            display: block;
+            border: none; /* Loại bỏ viền */
+            outline: none; /* Loại bỏ đường viền khi focus */
+            pointer-events: none; /* Không cho phép sự kiện click và hover */
+        }
+        .containers {
+         width: 100%;
+         height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="containers">
+        <header>
+            <h1>Sách</h1>
+        </header>
+        
+        <div th:object="${book}"  class="container" >
+            <div class="rowrow">
+                <div class="row1">
+                    <div class="row">
+                        <label for="title">Tiêu đề</label>
+                        <input style="width: 250px; height: 15px;" type="text" id="title" name="title" th:value="${book.title}" readonly required>
+                    </div>
+                    <div class="row">
+                        <label for="author">Tác giả</label>
+                        <input style="width: 250px; height: 15px;" type="text" id="author" name="author" th:value="${book.author}" readonly required>
+                    </div>
+                </div>
+                <div class="row1">
+                    <div class="row">
+                        <label for="description">Mô tả về sách</label>
+                        <input style="width: 520px; height: 50px;" type="text" id="description" name="description" th:value="${book.description}" readonly required>
+                    </div>
+                </div>
+                <div class="row1">
+                    <div class="row">
+                        <label for="nph">Ngày phát hành</label>
+                        <input style="width: 250px; height: 15px;" type="date" id="nph" name="nph" th:value="${book.nph}" readonly required>
+                    </div>
+                    <div class="row">
+                        <label for="nop">Số trang</label>
+                        <input style="width: 250px; height: 15px;" type="number" id="nop" name="nop" th:value="${book.nop}" readonly required>
+                    </div>
+                </div>
+                <div class="row1">
+                    <div class="row">
+                        <label for="category">Thể loại</label>
+                        <input style="width: 250px; height: 15px;" type="text" id="category" name="category" th:value="${book.category}"  readonly required>
+                    </div>
+                    <div class="row">
+                        <label for="nop">Số lượng đã bán</label>
+                        <input style="width: 250px; height: 15px;" type="number" id="slb" name="slb" th:value="${book.nop}" readonly required>
+                    </div>
+                </div>
+            </div>
+            <div class="rowrow">
+                <div class="row" style="display: flex; justify-content: center;">
+                    <div class="upload-btn-wrapper">
+                        <label for="nop">Ảnh bìa</label>
+                         <input type="text" id="url" name="url" th:value="${book.url}" readonly>
+                    </div>
+                </div>
+                <img th:src="@{${book.url}}" id="output" width="600" height="200">
+            </div>
+        </div>
+        <footer>
+            <label for="nop">Nhận xét</label>
+            <input style="width: 1000px; height: 100px;" type="text"  >
+            <button class="btn btn-outline-danger btn-sm">Tải lên</button>
+        </footer>
+   
+    </div>
+    
+</body>
+</html>
